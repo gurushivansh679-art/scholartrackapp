@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarTrack - Coaching Student Progress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen p-4 sm:p-6">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold">ScholarTrack Dashboard</h1>
+                <p class="text-indigo-200 text-sm">Coaching Center Progress, Attendance & Test Score Tracker</p>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Add Student Form -->
+            <div class="bg-white p-6 rounded-xl shadow-md h-fit">
+                <h2 class="text-lg font-bold mb-4 text-gray-800 border-b pb-2">Add Student Record</h2>
+                <form id="studentForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Student Name</label>
+                        <input type="text" id="name" placeholder="e.g. Rahul Sharma" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Attendance (%)</label>
+                        <input type="number" id="attendance" min="0" max="100" placeholder="e.g. 85" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Latest Test Score (%)</label>
+                        <input type="number" id="score" min="0" max="100" placeholder="e.g. 92" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition">Save Entry</button>
+                </form>
+            </div>
+
+            <!-- Student Records Table -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-lg font-bold mb-4 text-gray-800 border-b pb-2">Student Performance List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b text-gray-600 text-sm">
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Attendance</th>
+                                <th class="p-3">Test Score</th>
+                                <th class="p-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTable" class="divide-y text-sm">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-medium text-gray-800">Aman Verma</td>
+                                <td class="p-3">90%</td>
+                                <td class="p-3">88%</td>
+                                <td class="p-3"><span class="bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-semibold text-xs">Excellent</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('studentForm');
+        const table = document.getElementById('studentTable');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const attendance = document.getElementById('attendance').value;
+            const score = document.getElementById('score').value;
+
+            let status = score >= 75 
+                ? '<span class="bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-semibold text-xs">Excellent</span>' 
+                : score >= 50 
+                ? '<span class="bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full font-semibold text-xs">Average</span>' 
+                : '<span class="bg-red-100 text-red-700 px-2.5 py-1 rounded-full font-semibold text-xs">Needs Help</span>';
+
+            const row = `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-medium text-gray-800">${name}</td>
+                    <td class="p-3">${attendance}%</td>
+                    <td class="p-3">${score}%</td>
+                    <td class="p-3">${status}</td>
+                </tr>
+            `;
+            table.innerHTML += row;
+            form.reset();
+        });
+    </script>
+</body>
+</html>
